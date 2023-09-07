@@ -7,20 +7,28 @@ import java.time.Duration;
 public class ConnectOptions {
     private final int maxRetries;
     private final Duration timeBetweenRetries;
+    private final Duration initialDelayConnectionWatcherInterval;
+
+
     private final Duration connectionWatcherInterval;
 
-    public ConnectOptions(int maxRetries, Duration timeBetweenRetries, Duration connectionWatcherInterval) {
+    public ConnectOptions(int maxRetries, Duration timeBetweenRetries, Duration initialDelayConnectionWatcherInterval, Duration connectionWatcherInterval) {
         this.maxRetries = maxRetries;
         this.timeBetweenRetries = timeBetweenRetries;
+        this.initialDelayConnectionWatcherInterval = initialDelayConnectionWatcherInterval;
         this.connectionWatcherInterval = connectionWatcherInterval;
     }
 
     public static ConnectOptions defaults() {
-        return new ConnectOptions(3, Duration.ofSeconds(3), Defaults.CONNECTION_WATCHER_INTERVAL);
+        return new ConnectOptions(3, Duration.ofSeconds(3), Defaults.CONNECTION_WATCHER_INTERVAL, Defaults.CONNECTION_WATCHER_INTERVAL);
+    }
+
+    public static ConnectOptions defaultInit1sAfter1Min() {
+        return new ConnectOptions(3, Duration.ofSeconds(3), Defaults.CONNECTION_WATCHER_INTERVAL, Defaults.CONNECTION_WATCHER_INTERVAL_1MIN);
     }
 
     public static ConnectOptions neverStopTrying() {
-        return new ConnectOptions(Integer.MAX_VALUE, Duration.ofSeconds(3), Defaults.CONNECTION_WATCHER_INTERVAL);
+        return new ConnectOptions(Integer.MAX_VALUE, Duration.ofSeconds(3), Defaults.CONNECTION_WATCHER_INTERVAL, Defaults.CONNECTION_WATCHER_INTERVAL);
     }
 
     public int getMaxRetries() {
@@ -31,6 +39,11 @@ public class ConnectOptions {
         return timeBetweenRetries;
     }
 
+    public Duration getInitialDelayConnectionWatcherInterval() {
+        return initialDelayConnectionWatcherInterval;
+    }
+
+
     public Duration getConnectionWatcherInterval() {
         return connectionWatcherInterval;
     }
@@ -40,6 +53,7 @@ public class ConnectOptions {
         return "ConnectOptions{" +
                 "maxRetries=" + maxRetries +
                 ", timeBetweenRetries=" + timeBetweenRetries +
+                ", initialDelayConnectionWatcherInterval=" + initialDelayConnectionWatcherInterval +
                 ", connectionWatcherInterval=" + connectionWatcherInterval +
                 '}';
     }

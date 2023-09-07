@@ -128,7 +128,8 @@ public class MinecraftRconService implements IMinecraftRconService {
 
     private void startConnectionWatcher() {
         final long intervalSeconds = connectOptions.getConnectionWatcherInterval().toSeconds();
+        final long initIntervalSeconds = connectOptions.getInitialDelayConnectionWatcherInterval().toSeconds();
         final Runnable watcherTask = new ConnectionWatcherTask(connectionWatcher());
-        executorService.scheduleWithFixedDelay(watcherTask, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
+        executorService.scheduleWithFixedDelay(watcherTask, initIntervalSeconds, intervalSeconds, TimeUnit.SECONDS);
     }
 }
